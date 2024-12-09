@@ -7,5 +7,4 @@ import com.divine.ecommerce.model.ProductCategory;
 
 @RepositoryRestResource(collectionResourceRel = "productcategory" ,path = "product-category")
 public interface ProductCategoryInterface  extends JpaRepository<ProductCategory, Long>{
-
 }
