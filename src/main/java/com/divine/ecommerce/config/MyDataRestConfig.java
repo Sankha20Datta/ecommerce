@@ -11,8 +11,10 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
+import com.divine.ecommerce.model.Country;
 import com.divine.ecommerce.model.Product;
 import com.divine.ecommerce.model.ProductCategory;
+import com.divine.ecommerce.model.State;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
@@ -31,17 +33,19 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 		// TODO Auto-generated method stub
 
 		HttpMethod[]unSupportedMethods = {HttpMethod.POST,HttpMethod.PUT,HttpMethod.DELETE};
-		config.getExposureConfiguration()
-		.forDomainType(Product.class)
-		.withItemExposure((metadata,httpmethod)->httpmethod.disable(unSupportedMethods))
-		.withCollectionExposure((metadata,httpmethod)->httpmethod.disable(unSupportedMethods));
-		
-		config.getExposureConfiguration()
-		.forDomainType(ProductCategory.class)
-		.withItemExposure((metadata,httpmethod)->httpmethod.disable(unSupportedMethods))
-		.withCollectionExposure((metadata,httpmethod)->httpmethod.disable(unSupportedMethods));
+
+		disableHttpMethods(Product.class,config, unSupportedMethods);
+		disableHttpMethods(ProductCategory.class,config, unSupportedMethods);
+		disableHttpMethods(Country.class,config, unSupportedMethods);
+		disableHttpMethods(State.class,config, unSupportedMethods);
 		
 		exposIds(config);
+	}
+	private void disableHttpMethods(Class theClass, RepositoryRestConfiguration config, HttpMethod[] unSupportedMethods) {
+		config.getExposureConfiguration()
+		.forDomainType(theClass)
+		.withItemExposure((metadata,httpmethod)->httpmethod.disable(unSupportedMethods))
+		.withCollectionExposure((metadata,httpmethod)->httpmethod.disable(unSupportedMethods));
 	}
 	private void exposIds(RepositoryRestConfiguration config) {
 		
